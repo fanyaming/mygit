@@ -1,0 +1,59 @@
+<!DOCTYPE mapper
+  	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fym.ssm.mapper.RoleMapper">
+	<resultMap type="com.fym.ssm.domain.Role" id="base_mapper">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="sn" column="sn" />
+		<collection property="permissions" ofType="Permission">
+			<id property="id" column="pid" />
+			<result property="name" column="pname" />
+			<result property="expression" column="expression" />
+		</collection>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into role (name,sn) values(#{name},#{sn})
+	</insert>
+	<delete id="delete">
+		delete from role where id = #{id}
+	</delete>
+	
+	<update id="update">
+		update role
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="sn!=null">
+				sn=#{sn}
+			</if>
+		</set>	
+		where id=#{id}
+	</update>
+	
+	<select id="get" resultMap="base_mapper">
+		SELECT r.* ,p.id pid,p.name pname from role r
+		LEFT JOIN roles_permissions rp on r.id=rp.role_id
+		LEFT JOIN permission p on p.id=rp.permission_id
+		WHERE  r.id=#{id}
+	</select>
+	
+	<select id="list" resultMap="base_mapper">
+		select * from role
+	</select>
+	<select id="getListData" resultMap="base_mapper">
+		select * from role
+		limit #{beginIndex},#{pageSize}
+	</select>
+	<select id="getTotalCount" resultType="long">
+		select count(*) from role
+	</select>
+	<insert id="saveRelation">
+		INSERT  INTO roles_permissions VALUES (#{roleId},#{permissionId})
+	</insert>
+	<delete id="deleteRelation">
+		DELETE FROM roles_permissions WHERE role_id=#{id}
+	</delete>
+</mapper>

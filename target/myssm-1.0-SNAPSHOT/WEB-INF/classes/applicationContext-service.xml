@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        
+	<bean id="userService" class="com.fym.ssm.service.impl.UserServiceImpl">
+		<property name="userMapper" ref="userMapper"/>
+	</bean>
+	<bean id="deptService" class="com.fym.ssm.service.impl.DepartmentServiceImpl">
+		<property name="deptMapper" ref="deptMapper"/>
+		<property name="empMapper" ref="empMapper"/>
+	</bean>
+	<bean id="empService" class="com.fym.ssm.service.impl.EmployeeServiceImpl">
+		<property name="empMapper" ref="empMapper"/>
+		<property name="permissionMapper" ref="permissionMapper"/>
+	</bean>
+	<bean id="service" class="com.fym.ssm.service.impl.PermissionServiceImpl">
+		<property name="mapper" ref="permissionMapper"/>
+	</bean>
+	<bean id="roleService" class="com.fym.ssm.service.impl.RoleServiceImpl">
+		<property name="roleMapper" ref="roleMapper"/>
+		<property name="permissionMapper" ref="permissionMapper"/>
+	</bean>
+</beans>

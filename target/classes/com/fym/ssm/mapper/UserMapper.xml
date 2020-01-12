@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+  	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fym.ssm.mapper.UserMapper">
+	<resultMap type="com.fym.ssm.domain.User" id="base_mapper">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.fym.ssm.domain.User">
+		insert into USER (name) values(#{name})
+	</insert>
+	<delete id="delete">
+		delete from USER where id = #{id}
+	</delete>
+	
+	<update id="update">
+		update USER
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+
+		</set>	
+		where id=#{id}
+	</update>
+	
+	<select id="get" resultMap="base_mapper">
+		select * from USER where id =#{id}
+	</select>
+	
+	<select id="list" resultMap="base_mapper">
+		select * from USER
+	</select>
+	<!--<select id="getListData" resultMap="base_mapper">
+		select * from department 
+		limit #{beginIndex},#{pageSize}
+	</select>
+	<select id="getTotalCount" resultType="long">
+		select count(*) from department 
+	</select>-->
+</mapper>

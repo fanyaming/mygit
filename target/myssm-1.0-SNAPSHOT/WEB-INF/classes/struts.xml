@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+	<constant name="struts.ui.theme" value="simple"/>
+	<package name="wmsPkg" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="checkLogin" class="com.fym.ssm.web.interceptor.LoginInterceptor">
+			</interceptor>
+			<interceptor name="permissionInterceptor" class="com.fym.ssm.web.interceptor.PermissionInterceptor">
+			</interceptor>
+			<interceptor-stack name="mystack">
+				<interceptor-ref name="checkLogin">
+				</interceptor-ref>
+				<interceptor-ref name="permissionInterceptor">
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack">
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mystack">
+		</default-interceptor-ref>
+		<global-results>
+			<result name="login">
+				/login.jsp
+			</result>
+			<result name="nopermission">
+				/nopermission.jsp
+			</result>
+		</global-results>
+		<action name="*_*" class="{1}" method="{2}">
+			<result name="list" type="dispatcher">
+				WEB-INF/views/{1}/list.jsp
+			</result>
+			<result type="redirectAction">{1}</result>
+			<result name="input">
+				WEB-INF/views/{1}/input.jsp
+			</result>
+		</action>
+		<action name="main">
+			<result>WEB-INF/views/main.jsp</result>
+		</action>
+		<action name="login" class="login">
+			<interceptor-ref name="defaultStack">
+			</interceptor-ref>
+			<result name="main" type="redirectAction">
+				main
+			</result>
+
+		</action>
+	</package>
+
+</struts>
